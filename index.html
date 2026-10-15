@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#101a25" />
-    <title>VELO — Garage</title>
+    <title>Guna’s garage</title>
     <link href="./node_modules/@fontsource/chakra-petch/400.css" rel="stylesheet" />
     <link href="./node_modules/@fontsource/chakra-petch/500.css" rel="stylesheet" />
     <link href="./node_modules/@fontsource/chakra-petch/600.css" rel="stylesheet" />
@@ -16,29 +16,24 @@
   <body>
     <main class="garage" id="garage">
       <div class="scene-image" id="scene-image" aria-hidden="true"></div>
-      <div class="scene-fallback" aria-hidden="true"></div>
       <canvas id="bike-canvas" aria-label="Interactive 3D road bicycle. Drag to rotate."></canvas>
       <div class="scene-grade" aria-hidden="true"></div>
       <div class="model-loading" id="model-loading" role="status"><span class="loading-glyph">V</span><div><b id="loading-title">Loading bike model</b><small id="loading-detail">Preparing the garage scene</small></div><i><em id="loading-bar"></em></i></div>
 
       <header class="hud-top">
-        <button class="icon-button menu-button" id="menu-button" aria-label="Open garage menu"><span class="menu-glyph">☰</span></button>
-        <a class="logo" href="#garage"><span class="logo-mark">V</span><span>VELO<small> / GARAGE</small></span></a>
-        <nav class="top-nav" aria-label="Garage navigation"><a class="selected" href="#garage">Home</a><a href="#build">Build</a><a href="#ride-log">Ride log</a></nav>
+        <a class="logo" href="#garage"><span class="logo-mark">G</span><span>Guna’s garage</span></a>
         <div class="top-spacer"></div>
-        <div class="ride-chip"><span class="pin-icon">⌖</span><span>Demo ride</span><b>42.8 <small>km</small></b></div>
-        <div class="level-chip"><small>GARAGE</small><b>01</b></div>
-        <button class="profile-chip" aria-label="Your profile">GS</button>
+        <div class="view-switch" role="group" aria-label="Choose a bike view">
+          <button class="view-option active" data-view="garage" aria-pressed="true">Garage</button>
+          <button class="view-option" data-view="forest" aria-pressed="false">Forest</button>
+        </div>
       </header>
 
       <section class="hero-copy" aria-label="Bike details">
-        <div class="eyebrow"><i></i> Personal garage <span>•</span> Road / 01</div>
         <h1>The long<br /><em>way home.</em></h1>
-        <p>Silver &amp; cyan road build <span>—</span> Personal / 01</p>
-        <div class="hero-rule"><span></span> Your machine, your miles</div>
       </section>
 
-      <div class="scene-data"><span>01 / 01</span><i></i><span>Studio bay</span><i></i><span>Drag to explore</span></div>
+      <div class="scene-data"><span>01 / 01</span><i></i><span id="scene-location">Studio bay</span><i></i><span>Drag to explore</span></div>
 
       <div class="hotspots" aria-label="Bicycle parts">
         <button class="hotspot" data-part="frame" aria-label="Frame details" style="--x:53%;--y:40%"><i></i><span>Frame</span></button>
@@ -48,14 +43,15 @@
       </div>
 
       <aside class="part-card closed" id="part-card" aria-live="polite" aria-hidden="true">
-        <div class="part-card-head"><span class="card-kicker">Part inspector</span><button class="close-card" id="close-card" aria-label="Close part inspector">×</button></div>
+        <div class="part-card-head"><span class="card-kicker">Part details</span><button class="close-card" id="close-card" aria-label="Close part details">×</button></div>
         <div class="part-number" id="part-number">01 <span>/ 04</span></div>
         <div class="part-title-row"><div><p id="part-category">Frameset</p><h2 id="part-title">Frame &amp; fork</h2></div><span class="part-mark">↗</span></div>
         <p class="part-description" id="part-description">The foundation of every ride. Lightweight alloy tubing balances a responsive feel with the strength for everyday roads.</p>
         <div class="part-spec"><span id="part-spec">Alloy · road geometry</span><span>View spec <b>↗</b></span></div>
       </aside>
 
-      <button class="orbit-button" id="orbit-button" aria-label="Toggle automatic bike rotation"><span class="orbit-icon">⟳</span><span><b>Orbit view</b><small>Drag to rotate</small></span><span class="orbit-badge">360°</span></button>
+      <button class="zoom-out-floating" id="zoom-out" aria-label="Zoom out to full bike">↙ <span>Zoom out</span></button>
+      <button class="orbit-button active" id="orbit-button" aria-label="Pause automatic bike rotation" aria-pressed="true"><span class="orbit-icon">⟳</span><span><b>Orbit view</b><small>Slow orbit</small></span><span class="orbit-badge">360°</span></button>
 
       <footer class="garage-dock" id="build">
         <div class="dock-heading"><div><span>Your garage</span><b>01 <i>/</i> 01</b></div><span class="dock-hint">Select a part to inspect</span></div>
@@ -68,8 +64,27 @@
         </div>
       </footer>
 
-      <div class="stats-toast" id="stats-toast" role="status"><span class="toast-icon">↗</span><div><small>Sample ride log</small><b>2,486 km <i>·</i> 68 rides <i>·</i> 84.2 km longest</b></div><button id="dismiss-toast" aria-label="Dismiss ride stats">×</button></div>
-      <div class="menu-panel" id="menu-panel"><span>Garage menu</span><a href="#garage">Home</a><a href="#build">Build</a><a href="#ride-log">Ride log</a></div>
+      <button class="stats-scrim" id="stats-scrim" aria-label="Close ride statistics"></button>
+      <aside class="stats-panel" id="stats-panel" aria-labelledby="stats-title" aria-hidden="true">
+        <div class="stats-panel-head"><div><span class="stats-kicker">Ride log</span><h2 id="stats-title">Your stats</h2></div><button class="stats-close" id="stats-close" aria-label="Close ride statistics">×</button></div>
+        <div class="stats-panel-content">
+          <div id="cycling-stats">
+            <section class="stats-section"><h3>Last 4 weeks</h3><dl class="stats-table">
+              <div><dt>Activities / week</dt><dd>0</dd></div><div><dt>Avg distance / week</dt><dd>0 km</dd></div><div><dt>Elev gain / week</dt><dd>0 m</dd></div><div><dt>Avg time / week</dt><dd>0h 0m</dd></div>
+            </dl></section>
+            <section class="stats-section"><h3>Best efforts</h3><dl class="stats-table">
+              <div><dt>Longest ride</dt><dd class="highlight">103.0 km</dd></div><div><dt>Biggest climb</dt><dd class="highlight">55 m</dd></div><div><dt>Elevation gain</dt><dd class="highlight">655 m</dd></div>
+              <div><dt>5 mile</dt><dd class="highlight">18:22</dd></div><div><dt>10K</dt><dd class="highlight">22:36</dd></div><div><dt>10 mile</dt><dd class="highlight">43:38</dd></div><div><dt>20K</dt><dd class="highlight">56:37</dd></div><div><dt>30K</dt><dd class="highlight">1:36:10</dd></div><div><dt>40K</dt><dd class="highlight">2:15:22</dd></div><div><dt>50K</dt><dd class="highlight">2:49:23</dd></div><div><dt>80K</dt><dd class="highlight">5:26:50</dd></div><div><dt>50 mile</dt><dd class="highlight">5:37:40</dd></div><div><dt>90K</dt><dd class="highlight">6:40:10</dd></div><div><dt>100K</dt><dd class="highlight">7:33:29</dd></div>
+            </dl></section>
+            <section class="stats-section"><h3><label for="stats-year">Year</label><select id="stats-year" aria-label="Select year"><option>2026</option></select></h3><dl class="stats-table">
+              <div><dt>Activities</dt><dd>11</dd></div><div><dt>Distance</dt><dd>348.8 km</dd></div><div><dt>Elev gain</dt><dd>1,916 m</dd></div><div><dt>Time</dt><dd>18h 41m</dd></div>
+            </dl></section>
+            <section class="stats-section"><h3>All-time</h3><dl class="stats-table">
+              <div><dt>Activities</dt><dd>27</dd></div><div><dt>Distance</dt><dd>676.2 km</dd></div><div><dt>Elev gain</dt><dd>3,813 m</dd></div><div><dt>Time</dt><dd>38h 26m</dd></div>
+            </dl></section>
+          </div>
+        </div>
+      </aside>
       <div class="screen-edge" aria-hidden="true"></div>
     </main>
     <script src="app.js"></script>

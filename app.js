@@ -10,6 +10,7 @@ let selectedPart = 'frame';
 function selectPart(key) {
   const part = parts[key];
   if (!part) return;
+  setOrbitActive(false);
   selectedPart = key;
   inspector.classList.remove('closed');
   inspector.setAttribute('aria-hidden', 'false');
@@ -20,8 +21,19 @@ function selectPart(key) {
   document.querySelector('#part-spec').textContent = part.spec;
   document.querySelectorAll('.hotspot').forEach(el => el.classList.toggle('active', el.dataset.part === key));
   document.querySelectorAll('.dock-item').forEach(el => el.classList.toggle('active', el.dataset.part === key));
+  window.focusBikePart?.(key);
 }
 window.selectBikePart = selectPart;
+
+function setOrbitActive(active) {
+  const button = document.querySelector('#orbit-button');
+  button.classList.toggle('active', active);
+  button.setAttribute('aria-pressed', String(active));
+  button.setAttribute('aria-label', active ? 'Pause automatic bike rotation' : 'Start automatic bike rotation');
+  button.querySelector('small').textContent = active ? 'Slow orbit' : 'Drag to rotate';
+  window.setBikeAutoRotate?.(active);
+}
+window.setOrbitUi = setOrbitActive;
 
 document.querySelectorAll('[data-part]').forEach(el => el.addEventListener('click', () => selectPart(el.dataset.part)));
 document.querySelector('#close-card').addEventListener('click', () => {
@@ -29,20 +41,36 @@ document.querySelector('#close-card').addEventListener('click', () => {
   inspector.setAttribute('aria-hidden', 'true');
 });
 
-const menu = document.querySelector('#menu-panel');
-document.querySelector('#menu-button').addEventListener('click', () => menu.classList.toggle('open'));
-menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.remove('open')));
+document.querySelector('#zoom-out').addEventListener('click', () => window.zoomBikeOverview?.());
 
-const toast = document.querySelector('#stats-toast');
-document.querySelector('#stats-button').addEventListener('click', () => toast.classList.toggle('open'));
-document.querySelector('#dismiss-toast').addEventListener('click', () => toast.classList.remove('open'));
-document.querySelectorAll('a[href="#ride-log"]').forEach(link => link.addEventListener('click', e => { e.preventDefault(); toast.classList.add('open'); }));
-
+const statsPanel = document.querySelector('#stats-panel');
+const statsScrim = document.querySelector('#stats-scrim');
+const statsTrigger = document.querySelector('#stats-button');
+document.querySelectorAll('.view-option').forEach(button => button.addEventListener('click', () => {
+  const isForest = button.dataset.view === 'forest';
+  document.querySelector('.garage').classList.toggle('outdoor-view', isForest);
+  document.querySelectorAll('.view-option').forEach(option => {
+    const active = option === button;
+    option.classList.toggle('active', active);
+    option.setAttribute('aria-pressed', String(active));
+  });
+  document.querySelector('#scene-location').textContent = isForest ? 'Forest clearing' : 'Studio bay';
+  window.setBikeEnvironment?.(isForest);
+}));
+function setStatsOpen(open) {
+  document.querySelector('.garage').classList.toggle('stats-open', open);
+  statsPanel.setAttribute('aria-hidden', String(!open));
+  statsScrim.setAttribute('aria-hidden', String(!open));
+  if (open) document.querySelector('#stats-close').focus();
+  else statsTrigger.focus();
+}
+statsTrigger.addEventListener('click', () => setStatsOpen(true));
+document.querySelector('#stats-close').addEventListener('click', () => setStatsOpen(false));
+statsScrim.addEventListener('click', () => setStatsOpen(false));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && document.querySelector('.garage').classList.contains('stats-open')) setStatsOpen(false);
+});
 document.querySelector('#orbit-button').addEventListener('click', e => {
   const button = e.currentTarget;
-  button.classList.toggle('active');
-  const active = button.classList.contains('active');
-  button.setAttribute('aria-pressed', String(active));
-  button.querySelector('small').textContent = active ? 'Auto orbit active' : 'Drag to rotate';
-  window.setBikeAutoRotate?.(active);
+  setOrbitActive(!button.classList.contains('active'));
 });

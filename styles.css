@@ -4,11 +4,83 @@
 @media(max-width:600px){.garage{min-height:850px;height:100svh}.scene-image{background-size:145% auto;background-position:center 42%;transform:scale(1)}.scene-grade{background:linear-gradient(180deg,#07121ec9 0%,#07121e38 20%,transparent 36%,#07121e18 58%,#07121ee8 75%,#07121ef7 100%)}.hud-top{height:58px}.icon-button{width:47px}.logo{font-size:14px;gap:7px;padding:0 10px}.logo-mark{width:27px;height:27px}.logo small{font-size:7px}.top-nav{display:none}.ride-chip{height:31px;border:0;background:transparent;padding:0 5px;margin:0 4px 0 auto}.ride-chip b{font-size:17px}.level-chip{height:58px;min-width:54px}.level-chip b{font-size:22px}.level-chip small{font-size:6px}.profile-chip{width:42px;font-size:10px}.hero-copy{top:10%;left:6%;max-width:250px}.eyebrow{font-size:7px}.hero-copy h1{font-size:45px;margin:13px 0 8px}.hero-copy p{font-size:9px}.hero-rule{margin-top:12px;font-size:7px}.scene-data{top:31%;font-size:6px;white-space:nowrap}.hotspots{inset:58px 0 280px}.hotspot{width:25px;height:25px}.hotspot span{font-size:6px;padding:4px 5px}.hotspot[data-part="frame"]{--x:53%!important;--y:47%!important}.hotspot[data-part="drivetrain"]{--x:45%!important;--y:62%!important}.hotspot[data-part="cockpit"]{--x:62%!important;--y:38%!important}.hotspot[data-part="wheels"]{--x:64%!important;--y:63%!important}.part-card{left:6%;right:6%;bottom:265px;width:auto;padding:10px 13px}.part-card-head{padding-bottom:5px}.part-number{margin:7px 0 5px;font-size:8px}.part-title-row h2{font-size:18px}.part-description{font-size:8px;line-height:1.45;margin:6px 0 8px}.part-spec{padding-top:7px;font-size:6px}.orbit-button{right:6%;bottom:215px;padding:7px 9px;gap:6px}.orbit-button b{font-size:7px}.orbit-button small{font-size:6px}.orbit-icon{font-size:20px}.orbit-badge{font-size:7px;padding:4px}.garage-dock{padding:9px 6% 12px}.dock-heading{margin-bottom:6px}.dock-heading>div{font-size:7px}.dock-hint{font-size:6px}.dock-items{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.dock-item{min-height:54px;padding:5px;gap:6px}.dock-index{font-size:6px}.dock-art{display:none}.dock-copy small{font-size:6px}.dock-copy b{font-size:12px}.dock-copy em{font-size:5px}.dock-chevron{font-size:17px}.dock-action{grid-column:auto;min-height:54px;padding:5px;gap:6px}.action-icon{width:26px;height:26px;font-size:13px}.dock-action small{font-size:6px}.dock-action b{font-size:12px}.stats-toast{left:6%;right:6%;bottom:260px;padding:10px}.stats-toast b{font-size:8px}.menu-panel{left:47px;top:58px}.screen-edge{box-shadow:inset 0 0 55px #040b1280}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
+.hotspots{visibility:hidden}
+.garage.model-ready .hotspots{visibility:visible}
+
+/* Simplified header, part zoom control, and more legible secondary labels. */
+.hud-top{justify-content:flex-start}
+.logo{gap:12px;padding:0 26px;font-size:19px;letter-spacing:0}
+.logo-mark{font-weight:700}
+.zoom-out-floating{position:absolute;z-index:9;right:5.2%;bottom:263px;display:none;align-items:center;gap:7px;padding:9px 12px;border:1px solid #8caab8;background:#081621e8;color:var(--cyan);font:600 11px var(--mono);cursor:pointer;backdrop-filter:blur(8px)}
+.garage.part-focused .zoom-out-floating{display:flex}
+.zoom-out-floating:hover{background:#173447;border-color:var(--cyan)}
+.close-card{font-size:21px;line-height:1;padding:3px 5px}
+.eyebrow,.hero-rule,.scene-data,.hotspot span,.card-kicker,.part-number,.part-title-row p,.part-spec,.orbit-button b,.orbit-button small,.orbit-badge,.dock-heading>div,.dock-hint,.dock-index,.dock-copy small,.dock-copy em,.dock-action small,.stats-toast small{font-size:10px}
+.dock-copy em{font-size:9px}
+.dock-copy small,.dock-action small,.stats-toast small{font-size:10px}
+.part-spec{font-size:10px}
+.dock-index{font-size:10px}
+.dock-copy b{font-size:14px}
+.dock-hint{font-size:10px}
+.hotspot span{font-size:10px}
+@media(max-width:600px){
+  .logo{font-size:17px;padding:0 14px}
+  .logo-mark{width:29px;height:29px}
+  .eyebrow,.hero-rule,.scene-data,.hotspot span,.card-kicker,.part-number,.part-title-row p,.part-spec,.orbit-button b,.orbit-button small,.orbit-badge,.dock-heading>div,.dock-hint,.dock-index,.dock-copy small,.dock-copy em,.dock-action small,.stats-toast small{font-size:9px}
+  .dock-copy b{font-size:13px}
+  .zoom-out-floating{top:70px;right:6%;bottom:auto;font-size:10px;padding:7px 9px}
+}
+
+.stats-scrim{position:absolute;inset:0;z-index:12;border:0;background:#030a12b8;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s,visibility .28s}
+.stats-open .stats-scrim{opacity:1;visibility:visible;pointer-events:auto}
+.stats-panel{position:absolute;z-index:14;top:0;right:0;bottom:0;width:min(520px,92vw);display:flex;flex-direction:column;background:linear-gradient(155deg,#101f2c 0%,#0a1722 100%);border-left:1px solid #ffffff26;box-shadow:-22px 0 56px #02070db8;transform:translateX(102%);visibility:hidden;pointer-events:none;transition:transform .34s cubic-bezier(.2,.8,.2,1),visibility .34s;color:var(--white)}
+.stats-open .stats-panel{transform:translateX(0);visibility:visible;pointer-events:auto}
+.stats-panel-head{flex:0 0 auto;min-height:88px;display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid #ffffff25;background:#0b1824eF}
+.stats-kicker{display:block;color:var(--cyan);font:500 11px var(--mono);letter-spacing:.04em}
+.stats-panel-head h2{margin:2px 0 0;font:600 25px/1.2 var(--display);letter-spacing:0}
+.stats-close{width:38px;height:38px;border:1px solid #ffffff30;background:#142634;color:#dce8ef;font:26px/1 var(--sans);cursor:pointer}
+.stats-close:hover{border-color:var(--cyan);color:var(--cyan)}
+.stats-panel-content{min-height:0;overflow:auto;overscroll-behavior:contain;padding:18px 26px 32px;scrollbar-color:#456071 #0a1722;scrollbar-width:thin}
+.stats-panel-content>#cycling-stats>.stats-section:first-child{margin-top:0}
+.stats-section{margin:0 0 22px}
+.stats-section h3{display:flex;align-items:center;justify-content:space-between;margin:0;padding:11px 14px;border-bottom:1px solid #ffffff24;background:#122331;color:#f4f8fb;font:600 16px/1.3 var(--display);letter-spacing:0}
+.stats-section h3 label{font:inherit}
+.stats-section h3 select{appearance:none;padding:5px 28px 5px 10px;border:1px solid #ffffff30;border-radius:3px;background:#0b1925;color:var(--white);font:500 13px var(--mono);cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#72def2 50%),linear-gradient(135deg,#72def2 50%,transparent 50%);background-position:calc(100% - 13px) 50%,calc(100% - 8px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.stats-table{margin:0}
+.stats-table>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(118px,34%);min-height:43px;border-bottom:1px solid #ffffff12}
+.stats-table>div:nth-child(even){background:#ffffff08}
+.stats-table dt,.stats-table dd{display:flex;align-items:center;margin:0;padding:8px 14px;font:400 15px/1.35 var(--sans);letter-spacing:0}
+.stats-table dt{color:#d5e0e7}
+.stats-table dd{background:#ffffff08;color:#f5f8fb;font-weight:500}
+.stats-table dd.highlight{color:var(--cyan)}
+@media(max-width:600px){
+  .stats-panel{width:100vw}
+  .stats-panel-head{min-height:72px;padding:12px 18px}
+  .stats-panel-content{padding:14px 14px 25px}
+  .stats-table>div{grid-template-columns:minmax(0,1fr) minmax(104px,36%);min-height:42px}
+  .stats-table dt,.stats-table dd{padding:8px 10px;font-size:14px}
+  .stats-section h3{padding:10px;font-size:15px}
+}
+
+.scene-image::after{content:"";position:absolute;inset:0;background:url("assets/forest-clearing.png") center 56%/cover no-repeat;opacity:0;transition:opacity .72s ease}
+.outdoor-view .scene-image::after{opacity:1}
+.outdoor-view .scene-grade{background:linear-gradient(90deg,#09160cba 0%,#09160c72 23%,transparent 53%,transparent 76%,#09160c38 100%),linear-gradient(180deg,#07120c4d 0%,transparent 25%,transparent 66%,#07120c66 100%)}
+.view-switch{display:flex;gap:3px;margin-right:26px;padding:4px;border:1px solid #ffffff36;border-radius:4px;background:#07131db8;backdrop-filter:blur(8px)}
+.view-option{min-width:76px;padding:7px 12px;border:0;border-radius:2px;background:transparent;color:#cfdae1;font:500 12px var(--mono);cursor:pointer;transition:background .2s,color .2s}
+.view-option:hover{color:white;background:#ffffff12}
+.view-option.active{background:#17394a;color:#82e6f5;box-shadow:inset 0 -2px var(--cyan)}
+@media(max-width:600px){
+  .view-switch{margin-right:10px;padding:3px}
+  .view-option{min-width:58px;padding:6px 7px;font-size:11px}
+  .scene-image::after{background-position:center 54%;background-size:cover}
+}
+
 /* Readable type system: compact HUD labels remain secondary to the bike. */
 body{font-family:"Chakra Petch",sans-serif;letter-spacing:0;line-height:1.5}
 p{letter-spacing:0;line-height:1.5}
 h1,h2{line-height:1.2}
 .hero-copy h1{line-height:1.2;letter-spacing:0}
+.hero-copy h1{margin-top:0}
 .hero-copy p,.part-description,.menu-panel a,.stats-toast b{font-size:16px;line-height:1.5;letter-spacing:0}
 .part-description{max-width:36ch}
 .part-title-row h2{letter-spacing:0}

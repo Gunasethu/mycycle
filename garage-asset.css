@@ -1,16 +1,14 @@
 .scene-image { background: url("assets/garage-empty.png") center 51%/cover no-repeat; }
-.scene-fallback { position:absolute; inset:0; z-index:-1; background:url("assets/garage-bike-v2.png") center 51%/cover no-repeat; opacity:1; transition:opacity .8s ease; }
-.garage.model-ready .scene-fallback { display:none; }
 #bike-canvas { position:absolute; inset:0; width:100%; height:100%; z-index:1; display:block; touch-action:none; cursor:grab; }
 #bike-canvas:active { cursor:grabbing; }
-.model-loading { position:absolute; z-index:9; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; align-items:center; gap:12px; min-width:235px; padding:12px 15px; background:#091824e8; border:1px solid #b6d6e044; box-shadow:0 10px 28px #0007; transition:opacity .3s,visibility .3s; }
+.model-loading { position:absolute; z-index:9; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; align-items:center; gap:16px; width:min(340px,calc(100vw - 40px)); min-height:88px; padding:18px 20px; background:#091824ed; border:1px solid #b6d6e066; box-shadow:0 14px 38px #0009; transition:opacity .3s,visibility .3s; }
 .model-loading.hidden { opacity:0; visibility:hidden; }
 .model-loading.hidden { display:none; }
-.loading-glyph { display:grid; place-items:center; width:30px; height:30px; border:1px solid #57d6ef; color:#71e5f7; font:12px "Chakra Petch",sans-serif; animation:loading-pulse 1.2s ease-in-out infinite alternate; }
-.model-loading div { display:flex; flex-direction:column; gap:4px; flex:1; }
-.model-loading b { font:8px "Chakra Petch",sans-serif; letter-spacing:0; color:#fff; }
-.model-loading small { font:7px "Chakra Petch",sans-serif; letter-spacing:0; color:#9eb0bd; }
-.model-loading>i { position:absolute; bottom:0; left:0; right:0; height:2px; background:#ffffff18; }
+.loading-glyph { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; border:1px solid #57d6ef; color:#71e5f7; font:18px "Chakra Petch",sans-serif; animation:loading-pulse 1.2s ease-in-out infinite alternate; }
+.model-loading div { display:flex; flex-direction:column; gap:6px; flex:1; }
+.model-loading b { font:600 16px "Chakra Petch",sans-serif; letter-spacing:0; color:#fff; }
+.model-loading small { font:400 13px "Chakra Petch",sans-serif; letter-spacing:0; color:#b4c2cc; }
+.model-loading>i { position:absolute; bottom:0; left:0; right:0; height:3px; background:#ffffff18; }
 .model-loading em { display:block; width:0; height:100%; background:#58d8f0; transition:width .15s; }
 @keyframes loading-pulse { to { box-shadow:0 0 14px #56d5f15c; } }
-@media(max-width:600px) { .scene-fallback { background-size:145% auto; background-position:center 42%; } .model-loading { top:53%; } }
+@media(max-width:600px) { .model-loading { top:53%; min-height:82px; padding:15px 17px; } .model-loading b{font-size:15px}.model-loading small{font-size:12px} }
